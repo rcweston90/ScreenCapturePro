@@ -238,7 +238,7 @@ body {
     margin: 0;
     cursor: pointer;
     transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-    border-color: rgba(0, 0, 0, 0.15);
+    border: none;
     background-image: none;
     border-radius: 2em;
     appearance: none;
