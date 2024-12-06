@@ -86,6 +86,14 @@ body {
     overflow: hidden;
     background-size: 200% auto;
     background-position: 0%;
+    transform-origin: center;
+    animation: buttonIdle 2s ease-in-out infinite;
+}
+
+@keyframes buttonIdle {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-1px); }
+    100% { transform: translateY(0); }
 }
 
 .btn::before {
@@ -112,7 +120,7 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 10.01%);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.7) 10%, transparent 10.01%);
     background-repeat: no-repeat;
     background-position: 50%;
     transform: scale(10, 10);
@@ -123,19 +131,38 @@ body {
 .btn:active::after {
     transform: scale(0, 0);
     opacity: 0.3;
-    transition: 0s;
+    animation: ripple 0.8s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
 }
 
 .btn:hover {
     transform: translateY(-2px) scale(1.02);
     box-shadow: var(--shadow-md);
     filter: brightness(1.1);
+    animation: none;
 }
 
 .btn:active {
     transform: translateY(1px) scale(0.98);
     box-shadow: var(--shadow-sm);
     filter: brightness(0.95);
+    animation: buttonPress 0.2s ease-in-out forwards;
+}
+
+@keyframes buttonPress {
+    0% { transform: scale(1.02); }
+    50% { transform: scale(0.98); }
+    100% { transform: scale(1); }
 }
 
 .btn:focus {
@@ -153,8 +180,27 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
+    background: linear-gradient(
+        120deg,
+        var(--primary-color),
+        #60a5fa,
+        var(--primary-color)
+    );
+    background-size: 200% 100%;
     color: white;
+    animation: gradientMove 3s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 .btn-warning {
