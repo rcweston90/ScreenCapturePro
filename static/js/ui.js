@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
     const recorder = new ScreenRecorder();
     const preview = document.getElementById('preview');
     const startBtn = document.getElementById('startBtn');
@@ -7,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const micToggle = document.getElementById('micToggle');
     const cursorToggle = document.getElementById('cursorToggle');
     const formatSelect = document.getElementById('formatSelect');
+    const themeToggle = document.getElementById('themeToggle');
     const previewModal = new bootstrap.Modal(document.getElementById('preview-modal'));
     const previewVideo = document.getElementById('preview-video');
     const downloadBtn = document.getElementById('downloadBtn');
@@ -117,6 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 throw new Error('Failed to save recording');
             }
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
         } catch (error) {
             console.error('Error saving recording:', error);
             alert('Failed to save recording');
