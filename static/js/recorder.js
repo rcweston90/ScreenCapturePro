@@ -25,8 +25,27 @@ class ScreenRecorder {
                 this.stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
             }
 
+            const mimeTypes = [
+                'video/webm;codecs=vp9',
+                'video/webm;codecs=vp8',
+                'video/webm',
+                'video/mp4'
+            ];
+            
+            let selectedMimeType;
+            for (const mimeType of mimeTypes) {
+                if (MediaRecorder.isTypeSupported(mimeType)) {
+                    selectedMimeType = mimeType;
+                    break;
+                }
+            }
+            
+            if (!selectedMimeType) {
+                throw new Error('No supported MIME type found for recording');
+            }
+
             this.mediaRecorder = new MediaRecorder(this.stream, {
-                mimeType: 'video/webm;codecs=vp9'
+                mimeType: selectedMimeType
             });
 
             this.mediaRecorder.ondataavailable = (event) => {

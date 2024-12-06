@@ -31,7 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
             startBtn.parentNode.insertBefore(indicator, startBtn);
         } catch (error) {
             console.error('Failed to start recording:', error);
-            alert('Failed to start recording. Please make sure you have granted the necessary permissions.');
+            let errorMessage = 'Failed to start recording. ';
+            if (error.name === 'NotAllowedError') {
+                errorMessage += 'Please grant screen sharing permissions to record your screen.';
+            } else if (error.name === 'NotReadableError') {
+                errorMessage += 'Unable to access your screen. Please try again or use a different window.';
+            } else if (error.message.includes('MIME type')) {
+                errorMessage += 'Your browser may not support screen recording. Please try using a modern browser like Chrome or Firefox.';
+            } else {
+                errorMessage += 'Please make sure you have granted the necessary permissions and try again.';
+            }
+            alert(errorMessage);
         }
     });
 
