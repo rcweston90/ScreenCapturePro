@@ -11,10 +11,22 @@ class ScreenRecorder {
         try {
             const displayMediaOptions = {
                 video: {
-                    cursor: options.showCursor ? "always" : "never"
+                    cursor: options.showCursor ? "always" : "never",
+                    displaySurface: "monitor"
                 },
-                audio: false
+                audio: false,
+                surfaceSwitching: "include",
+                selfBrowserSurface: "exclude",
+                systemAudio: "exclude"
             };
+
+            if (options.sourceId) {
+                displayMediaOptions.video.displaySurface = "window";
+                displayMediaOptions.video.mediaSource = "screen";
+                displayMediaOptions.video.width = options.width || 1920;
+                displayMediaOptions.video.height = options.height || 1080;
+                displayMediaOptions.video.frameRate = 30;
+            }
 
             if (options.microphone) {
                 const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
