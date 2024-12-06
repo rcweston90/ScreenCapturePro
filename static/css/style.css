@@ -225,56 +225,77 @@ body {
     border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.form-check {
+.toggle-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.toggle-wrapper {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin: 0;
+    gap: 12px;
 }
 
-.form-check-input {
-    width: 3em;
-    height: 1.5em;
-    margin: 0;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    border: none;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 2em;
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
 }
 
-.form-check-input::before {
-    content: '';
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
     position: absolute;
-    width: 1.25em;
-    height: 1.25em;
-    border-radius: 50%;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-speed) ease;
+    border-radius: 34px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
     background-color: white;
-    transform: scale(0.85);
-    left: 0.125em;
-    top: 0.125em;
-    transition: transform var(--transition-speed) ease;
+    transition: all var(--transition-speed) ease;
+    border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.form-check-input:checked {
+input:checked + .toggle-slider {
     background-color: var(--primary-color);
 }
 
-.form-check-input:checked::before {
-    transform: translateX(1.5em) scale(0.85);
+input:checked + .toggle-slider:before {
+    transform: translateX(20px);
 }
 
-.form-check-input:hover {
-    filter: brightness(0.95);
+.toggle:hover .toggle-slider {
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
-.form-check-input:focus {
-    outline: none;
+input:checked:hover + .toggle-slider {
+    background-color: #2563eb;
+}
+
+.toggle:focus-within .toggle-slider {
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
-.form-check-label {
+.toggle-label {
     color: #4a5568;
     font-size: 0.95rem;
     cursor: pointer;
