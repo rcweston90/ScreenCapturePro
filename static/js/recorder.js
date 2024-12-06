@@ -9,27 +9,36 @@ class ScreenRecorder {
 
     async startRecording(options = {}) {
         try {
+            // Check if getDisplayMedia is supported
+            if (!navigator.mediaDevices?.getDisplayMedia) {
+                throw new Error('Screen capture is not supported in this browser');
+            }
+
             const displayMediaOptions = {
                 video: {
                     cursor: options.showCursor ? "always" : "never",
                     displaySurface: "monitor"
                 },
-                audio: false,
-                surfaceSwitching: "include",
-                selfBrowserSurface: "exclude",
-                systemAudio: "exclude"
+                audio: options.microphone ? true : false,
+                selfBrowserSurface: "exclude"
             };
 
-            // Full screen recording only
-            displayMediaOptions.video.frameRate = 30;
-
+            // Request screen sharing first
+            this.stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+            
+            // If microphone is requested, get it separately
             if (options.microphone) {
-                const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                this.stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-                const tracks = [...this.stream.getTracks(), ...audioStream.getTracks()];
-                this.stream = new MediaStream(tracks);
-            } else {
-                this.stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+                try {
+                    const audioStream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: true,
+                        echoCancellation: true,
+                        noiseSuppression: true
+                    });
+                    const tracks = [...this.stream.getTracks(), ...audioStream.getTracks()];
+                    this.stream = new MediaStream(tracks);
+                } catch (audioError) {
+                    console.warn('Microphone access denied, continuing without audio');
+                }
             }
 
             const mimeTypes = [

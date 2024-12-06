@@ -32,16 +32,34 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Failed to start recording:', error);
             let errorMessage = 'Failed to start recording. ';
+            
             if (error.name === 'NotAllowedError') {
-                errorMessage += 'Please grant screen sharing permissions to record your screen.';
+                if (error.message.includes('Permission denied by system')) {
+                    errorMessage += 'System permission denied. Please check your operating system\'s screen recording permissions:\n\n' +
+                        '• On Windows: Check your Privacy Settings > Screen Recording\n' +
+                        '• On macOS: Check System Preferences > Security & Privacy > Screen Recording\n' +
+                        '• On Linux: Ensure your desktop environment allows screen sharing';
+                } else {
+                    errorMessage += 'Please click "Share" when your browser asks for screen recording permission.';
+                }
             } else if (error.name === 'NotReadableError') {
                 errorMessage += 'Unable to access your screen. Please try again or use a different window.';
-            } else if (error.message.includes('MIME type')) {
-                errorMessage += 'Your browser may not support screen recording. Please try using a modern browser like Chrome or Firefox.';
+            } else if (error.name === 'NotFoundError') {
+                errorMessage += 'No available screens found. Please ensure you have a display connected.';
+            } else if (error.message.includes('not supported')) {
+                errorMessage += 'Your browser does not support screen recording. Please use Chrome, Firefox, or Edge.';
             } else {
-                errorMessage += 'Please make sure you have granted the necessary permissions and try again.';
+                errorMessage += 'An unexpected error occurred. Please refresh the page and try again.';
             }
-            alert(errorMessage);
+            
+            // Show error in a more visible way
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+            errorDiv.innerHTML = `
+                <strong>Error:</strong> ${errorMessage}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.querySelector('.container-fluid').insertBefore(errorDiv, document.querySelector('.preview-container'));
         }
     });
 
