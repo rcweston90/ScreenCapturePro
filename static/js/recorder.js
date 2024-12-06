@@ -20,13 +20,8 @@ class ScreenRecorder {
                 systemAudio: "exclude"
             };
 
-            if (options.sourceId) {
-                displayMediaOptions.video.displaySurface = "window";
-                displayMediaOptions.video.mediaSource = "screen";
-                displayMediaOptions.video.width = options.width || 1920;
-                displayMediaOptions.video.height = options.height || 1080;
-                displayMediaOptions.video.frameRate = 30;
-            }
+            // Full screen recording only
+            displayMediaOptions.video.frameRate = 30;
 
             if (options.microphone) {
                 const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });

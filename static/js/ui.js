@@ -2,51 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const recorder = new ScreenRecorder();
     const preview = document.getElementById('preview');
     const startBtn = document.getElementById('startBtn');
-    const selectionBox = document.getElementById('selection-box');
-    const previewContainer = document.getElementById('preview-container');
-    
-    let isSelecting = false;
-    let startX, startY;
-    let currentX, currentY;
-    let selectedArea = null;
-
-    previewContainer.addEventListener('mousedown', (e) => {
-        isSelecting = true;
-        startX = e.clientX - previewContainer.getBoundingClientRect().left;
-        startY = e.clientY - previewContainer.getBoundingClientRect().top;
-        selectionBox.style.left = `${startX}px`;
-        selectionBox.style.top = `${startY}px`;
-        selectionBox.style.width = '0';
-        selectionBox.style.height = '0';
-        selectionBox.classList.remove('hidden');
-    });
-
-    previewContainer.addEventListener('mousemove', (e) => {
-        if (!isSelecting) return;
-        
-        currentX = e.clientX - previewContainer.getBoundingClientRect().left;
-        currentY = e.clientY - previewContainer.getBoundingClientRect().top;
-        
-        const width = currentX - startX;
-        const height = currentY - startY;
-        
-        selectionBox.style.width = `${Math.abs(width)}px`;
-        selectionBox.style.height = `${Math.abs(height)}px`;
-        selectionBox.style.left = `${width > 0 ? startX : currentX}px`;
-        selectionBox.style.top = `${height > 0 ? startY : currentY}px`;
-    });
-
-    previewContainer.addEventListener('mouseup', () => {
-        if (!isSelecting) return;
-        isSelecting = false;
-        
-        selectedArea = {
-            x: parseInt(selectionBox.style.left),
-            y: parseInt(selectionBox.style.top),
-            width: parseInt(selectionBox.style.width),
-            height: parseInt(selectionBox.style.height)
-        };
-    });
     const pauseBtn = document.getElementById('pauseBtn');
     const stopBtn = document.getElementById('stopBtn');
     const micToggle = document.getElementById('micToggle');
