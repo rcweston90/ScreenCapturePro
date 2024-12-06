@@ -84,6 +84,24 @@ body {
     box-shadow: var(--shadow-sm);
     position: relative;
     overflow: hidden;
+    background-size: 200% auto;
+    background-position: 0%;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.8s;
+}
+
+.btn:hover::before {
+    transform: translateX(100%);
 }
 
 .btn::after {
@@ -94,12 +112,12 @@ body {
     top: 0;
     left: 0;
     pointer-events: none;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 10.01%);
     background-repeat: no-repeat;
     background-position: 50%;
     transform: scale(10, 10);
     opacity: 0;
-    transition: transform 0.5s, opacity 1s;
+    transition: transform 0.4s, opacity 0.8s;
 }
 
 .btn:active::after {
@@ -109,18 +127,27 @@ body {
 }
 
 .btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
     box-shadow: var(--shadow-md);
     filter: brightness(1.1);
 }
 
 .btn:active {
-    transform: translateY(1px);
+    transform: translateY(1px) scale(0.98);
     box-shadow: var(--shadow-sm);
     filter: brightness(0.95);
 }
 
 .btn:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    outline: none;
+}
+
+.btn:focus:not(:focus-visible) {
+    box-shadow: var(--shadow-sm);
+}
+
+.btn:focus-visible {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
     outline: none;
 }
